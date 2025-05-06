@@ -12,8 +12,12 @@ git clone https://github.com/syntax-terror-256/new-amorim.git .
 ```
 
 ### 3. Instale as dependências do projeto
+Abra um terminal no diretório raiz do projeto e execute os seguintes comandos:
 ```console
 pip install -r requirements.txt
+```
+```console
+npm install
 ```
 
 ### 4. Instale as extensões usadas no desenvolvimento
