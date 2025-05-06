@@ -172,4 +172,5 @@ cython_debug/
 
 # others
 node_modules/
-static/src/css/output.css
+staticfiles/
+shared/static/shared/css/output.css
