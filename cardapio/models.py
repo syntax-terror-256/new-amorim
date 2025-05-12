@@ -12,7 +12,7 @@ class Product(models.Model):
 
     name = models.CharField(verbose_name="nome")
     price = models.FloatField(verbose_name="preço")
-    unity_type = models.IntegerField(
+    unit_type = models.IntegerField(
         verbose_name="tipo de unidade",
         choices=ProductChoices,
         default=ProductChoices.unidade,
