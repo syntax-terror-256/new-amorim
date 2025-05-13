@@ -11,6 +11,11 @@ class Product(models.Model):
         kg = 2, "kg"
 
     name = models.CharField(verbose_name="nome")
+    image = models.CharField(
+        verbose_name="url da imagem",
+        default="https://www.thefuzzyduck.co.uk/wp-content/uploads/2024/05/image-coming-soon-placeholder-01-660x660.png",
+    )
+    details = models.CharField(verbose_name="detalhes")
     price = models.FloatField(verbose_name="preço")
     unit_type = models.IntegerField(
         verbose_name="tipo de unidade",
