@@ -1,0 +1,33 @@
+{% extends "cardapio/default.html" %}
+{% load static %}
+
+{% block subheader %}
+    {% comment %} TODO: adicionar menu dropdown e barra de pesquisa {% endcomment %}
+{% endblock subheader %}
+
+{% block main %}
+    <section class="destaques">
+        <div class="destaque">
+            <img src="https://static.vecteezy.com/system/resources/previews/006/532/743/large_2x/flash-sale-banner-illustration-template-design-of-special-offer-discount-for-media-promotion-and-social-media-post-free-vector.jpg">
+            <h2>Titulo Genérico</h2>
+            <p>Uma descrição genérica para um destaque genérico.</p>
+        </div>
+    </section>
+
+    <section class="cardapio">
+        {% for menu in menus %}
+            <div class="menu-container">
+                <h2>{{menu.name}}</h2>
+                {% for product in menu.products.all %}
+                    <div class="product-container">
+                        <img src="{{product.image}}">
+                        <h3>{{product.name}}</h3>
+                        <p>{{product.details}}</p>
+                        <div>R$ {{product.price|floatformat:2}} {{product.get_unit_type_display}}</div>
+                        <button>Comprar <img src="{% static 'cardapio/img/cart-add.svg' %}"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </section>
+{% endblock main %}
