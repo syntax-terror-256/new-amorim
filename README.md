@@ -11,30 +11,39 @@ Navegue para uma pasta vazia e execute o seguinte comando:
 git clone https://github.com/syntax-terror-256/new-amorim.git .
 ```
 
-### 3. Instale as dependências do projeto
+### 3. Instale a ferramenta uv
+#### winget
+Execute o seguinte comando para instalar a ferramenta uv usando winget:
+```console
+winget install --id=astral-sh.uv  -e
+```
+
+#### pip
+Execute o seguinte comando para instalar a ferramenta uv usando pip:
+```console
+pip install uv
+```
+
+#### Outros métodos
+Escolha alguma das várias opções de instalação disponíveis no [site da ferramenta](https://docs.astral.sh/uv/getting-started/installation/#installation-methods).
+
+### 4. Instale as dependências do projeto
 Abra um terminal no diretório raiz do projeto e execute os seguintes comandos:
 ```console
-pip install -r requirements.txt
+uv sync
 ```
 ```console
 npm install
 ```
 
-### 4. Instale as extensões usadas no desenvolvimento
+### 5. Instale as extensões usadas no desenvolvimento
 - [**Black Formater**](https://marketplace.visualstudio.com/items/?itemName=ms-python.black-formatter) - Linter utilizado na formatação do código *Python*.
 - [**Django**](https://marketplace.visualstudio.com/items/?itemName=batisteo.vscode-django) - Extensão que adiciona suporte ao framework *Django* e *Django Templates*.
 - [**Tailwind CSS IntelliSense**](https://marketplace.visualstudio.com/items/?itemName=bradlc.vscode-tailwindcss) - Extensão que adiciona suporte ao framework *Tailwind CSS*.
 
 
 ## Testando o Projeto
-### 1. Inicie o Servidor
-Abra um novo terminal e execute o seguinte comando para iniciar o servidor em modo debug:
+Abra um novo terminal e execute o seguinte comando para iniciar o servidor e Tailwind CSS em modo debug:
 ```console
-python manage.py runserver
-```
-
-### 2. Inicie o Tailwind CSS
-Abra um novo terminal e execute o seguinte comando para iniciar compilador do Tailwind CSS em modo observador:
-```console
-npm run dev
+uv run scripts.py dev
 ```
