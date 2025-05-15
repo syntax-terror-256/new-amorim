@@ -1,0 +1,20 @@
+{% load static %}
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+    <link href="{% static 'shared/css/output.css' %}" rel="stylesheet">
+    {% block link %}{% endblock link %}
+</head>
+<body>
+    <header class="header">
+        {% comment %} TODO {% endcomment %}
+    </header>
+    <section class="subheader">
+        {% block subheader %}{% endblock subheader %}
+    </section>
+    <section class="main">
+        {% block main %}{% endblock main %}
+    </section>
+</body>
+</html>
