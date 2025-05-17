@@ -7,12 +7,22 @@
     {% block link %}{% endblock link %}
 </head>
 <body>
-    <header class="header">
+    <header class="bg-[#FFB2B3] h-16 flex justify-end items-center space-x-4 pr-25">
+
+        <button><img src="{% static 'cardapio/img/menu.png' %}" alt="" class="w-8 h-8 cursor-pointer"></button>
+        <button><img src="{% static 'cardapio/img/coments.png' %}" alt="" class="w-8 h-8 cursor-pointer"></button>
+        <button><img src="{% static 'cardapio/img/account.png' %}" alt="" class="w-8 h-8 cursor-pointer"></button>
+        <button><img src="{% static 'cardapio/img/cart-add.svg' %}" alt="" class="w-8 h-8 cursor-pointer"></button>
+        
+        
         {% comment %} TODO {% endcomment %}
     </header>
+    
     <section class="subheader">
+        <img src="{% static 'cardapio/img/img-header.png' %}" alt="" class="w-full">
         {% block subheader %}{% endblock subheader %}
     </section>
+
     <section class="main">
         {% block main %}{% endblock main %}
     </section>
