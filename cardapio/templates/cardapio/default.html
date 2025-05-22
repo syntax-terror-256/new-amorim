@@ -1,5 +1,5 @@
 {% load static %}
-<html lang="pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock title %}</title>
@@ -7,12 +7,41 @@
     {% block link %}{% endblock link %}
 </head>
 <body>
-    <header class="header">
-        {% comment %} TODO {% endcomment %}
+    <header class="">
+
+        <img src="{% static 'cardapio/img/img-header.png' %}" alt="" class="w-full">
     </header>
-    <section class="subheader">
+
+    
+    <section class="subheader bg-[#ffb2b3] h-16 flex justify-end items-center space-x-4 pr-25 gap-x-4 ">
+
+      <div class="flex items-center px-4 py-4 justify-start gap-2 w-full">
+        <!-- Barra de pesquisa -->
+        <form method="GET" action="{% url 'cardapio:index' %}" class="flex items-center gap-2 w-full max-w-md pl-10">
+          <input
+            type="text"
+            name="q"
+            value="{{ request.GET.q }}"
+            placeholder="Buscar produtos..."
+            class="w-full px-4 py-2 bg-white border border-none rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"/>
+          <button type="submit" class="bg-pink-400 text-white px-4 py-2 rounded-md hover:bg-pink-500">
+            🔍
+          </button>
+        </form>
+      </div>
+          
+
+        <button><img src="{% static 'cardapio/img/menu.png' %}" alt="" class="w-8 h-8 cursor-pointer"></button>
+        <button><img src="{% static 'cardapio/img/coments.png' %}" alt="" class="w-8 h-8 cursor-pointer"></button>
+        <button><img src="{% static 'cardapio/img/account.png' %}" alt="" class="w-8 h-8 cursor-pointer"></button>
+        <button><img src="{% static 'cardapio/img/cart-add.svg' %}" alt="" class="w-8 h-8 cursor-pointer"></button>
+
+        
         {% block subheader %}{% endblock subheader %}
     </section>
+
+    
+
     <section class="main">
         {% block main %}{% endblock main %}
     </section>
