@@ -61,7 +61,7 @@
 <!-- Conteúdo principal -->
 <div class="flex flex-row h-full pt-42">
   <!-- SIDEBAR à esquerda para desktop -->
-  <div class="z-40 p-6 hidden lg:block overflow-y-auto w-1/8 px-8 pt-8">
+  <div class="z-40 p-6 hidden lg:block overflow-y-auto w-56 pl-8 pt-8">
     <p class="text-lg font-semibold mb-4">Lista de opções</p>
     <ul class="space-y-2">
       <li class="border-b border-gray-400 pb-1">
@@ -69,14 +69,14 @@
       </li>
       {% for menu in menus %}
         <li class="border-b border-gray-400 pb-1">
-          <a href="#menu-{{ menu.id }}" class="hover:text-pink-600">• {{ menu.name }}</a>
+          <a href="#menu-{{ menu.id }}" class="hover:text-pink-600 text-sm">• {{ menu.name }}</a>
         </li>
       {% endfor %}
     </ul>
   </div>
 
   <!-- conteúdo principal à direita -->
-  <div class="overflow-y-auto w-full lg:w-6/8 no-scrollbar px-8 pt-8">
+  <div class="overflow-y-auto w-full lg:pr-48 no-scrollbar px-8 pt-8">
     <!-- CARROSSEL DE PROMOÇÕES -->
     <section class="mb-12">
       <h2 class="text-xl font-bold mb-4 text-pink-700 uppercase tracking-wide">★ Destaques</h2>
