@@ -64,9 +64,6 @@
   <div class="z-40 p-6 hidden lg:block overflow-y-auto w-56 pl-8 pt-8">
     <p class="text-lg font-semibold mb-4">Lista de opções</p>
     <ul class="space-y-2">
-      <li class="border-b border-gray-400 pb-1">
-        <a href="#" onclick="scrollToSection('')" class="hover:text-pink-600">• Todos</a>
-      </li>
       {% for menu in menus %}
         <li class="border-b border-gray-400 pb-1">
           <a href="#menu-{{ menu.id }}" class="hover:text-pink-600 text-sm">• {{ menu.name }}</a>
@@ -112,6 +109,23 @@
             <h2 class="text-lg font-bold mb-4 text-pink-600 uppercase tracking-wide">★ {{ menu.name }}</h2>
 
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {% for combo in menu.combos.all %}
+                <div class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col">
+                  <img src="{{ combo.image }}" alt="{{ combo.name }}" class="w-50 y-full lg:h-40 lg:w-full object-contain border-b border-pink-300 bg-white p-2">
+                  <div class="p-4 flex flex-col flex-1 justify-between">
+                    <div>
+                      <h3 class="text-base font-semibold text-pink-700">{{ combo.name }}</h3>
+                      <p class="text-gray-600 text-sm mt-1">{{ combo.details }}</p>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                      <span class="text-green-700 font-bold text-lg flex items-center gap-1">
+                        <img src="{% static 'cardapio/img/cart-add.svg' %}" alt="Carrinho" class="w-5 h-5 mx-2">
+                        R$ {{ combo.price|floatformat:2 }} {{ combo.get_unit_type_display }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
               {% for product in menu.products.all %}
                 <div class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col">
                   <img src="{{ product.image }}" alt="{{ product.name }}" class="w-50 y-full lg:h-40 lg:w-full object-contain border-b border-pink-300 bg-white p-2">
