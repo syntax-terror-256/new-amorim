@@ -61,7 +61,7 @@
 <!-- Conteúdo principal -->
 <div class="flex flex-row h-full pt-42">
   <!-- SIDEBAR à esquerda para desktop -->
-  <div class="z-40 p-6 hidden lg:block overflow-y-auto w-56 pl-8 pt-8">
+  <div class="p-6 hidden lg:block overflow-y-auto w-56 pl-8 pt-8">
     <p class="text-lg font-semibold mb-4">Lista de opções</p>
     <ul class="space-y-2">
       {% for menu in menus %}
@@ -110,7 +110,12 @@
 
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {% for combo in menu.combos.all %}
-                <div class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col">
+                <a 
+                  class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col"
+                  id="combo-{{ combo.id }}"
+                  {% comment %} TODO: replace this placeholder {% endcomment %}
+                  href="{% url "cardapio:details" type='combo' pk=combo.id %}"
+                  >
                   <img src="{{ combo.image }}" alt="{{ combo.name }}" class="w-50 y-full lg:h-40 lg:w-full object-contain border-b border-pink-300 bg-white p-2">
                   <div class="p-4 flex flex-col flex-1 justify-between">
                     <div>
@@ -124,10 +129,16 @@
                       </span>
                     </div>
                   </div>
-                </div>
-              {% endfor %}
-              {% for product in menu.products.all %}
-                <div class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col">
+                </a>
+                {% endfor %}
+                
+                {% for product in menu.products.all %}
+                <a 
+                class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col"
+                id="product-{{ product.id }}"
+                {% comment %} TODO: replace this placeholder {% endcomment %}
+                href="{% url "cardapio:details" type='produto' pk=product.id %}"
+                >
                   <img src="{{ product.image }}" alt="{{ product.name }}" class="w-50 y-full lg:h-40 lg:w-full object-contain border-b border-pink-300 bg-white p-2">
                   <div class="p-4 flex flex-col flex-1 justify-between">
                     <div>
@@ -141,7 +152,7 @@
                       </span>
                     </div>
                   </div>
-                </div>
+                </a>
               {% endfor %}
             </div>
           </div>

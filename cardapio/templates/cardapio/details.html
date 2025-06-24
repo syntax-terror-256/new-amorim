@@ -1,0 +1,35 @@
+{% load static %}
+<link href="{% static 'shared/css/output.css' %}" rel="stylesheet">
+
+<div
+  class="fixed flex items-center justify-center z-5 w-full h-full bg-black/50">
+  <div class="flex flex-col z-6 w-full h-full lg:w-3xl lg:h-5/6 lg:mx-32 lg:my-80 p-5 bg-white rounded-2xl">
+    {% comment %} botão de fechar {% endcomment %}
+    <div class="flex flex-row justify-end mb-2">
+      <button onclick="closePopup()" class="cursor-pointer">
+        <img class="h-7 w-7" src="{% static 'cardapio/img/x.svg' %}" alt="">
+      </button>
+    </div>
+
+    {% comment %} conteúdo principal da popup {% endcomment %}
+    <div class="mx-5">
+      {% if popup_type == 'product' %}
+      <h2 class="text-2xl font-bold">{{ popup_object.name }}</h2>
+
+      {% elif popup_type == 'combo' %}
+      <h2 class="text-2xl font-bold">{{ popup_object.name }}</h2>
+
+      {% else %}
+      <p>Erro ao carregar popup</p>
+
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  {% comment %} TODO: replace this placeholder {% endcomment %}
+  function closePopup() {
+    window.location.href = "{% url 'cardapio:index' %}"
+  }
+</script>
