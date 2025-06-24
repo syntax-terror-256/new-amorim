@@ -1,6 +1,5 @@
-from enum import Enum
-
 from django.db import models
+from django.templatetags.static import static
 
 
 # model que representa um produto, seja ele encomendável ou parte de um conjunto
@@ -13,7 +12,7 @@ class Product(models.Model):
     name = models.CharField(verbose_name="nome")
     image = models.CharField(
         verbose_name="url da imagem",
-        default="https://www.thefuzzyduck.co.uk/wp-content/uploads/2024/05/image-coming-soon-placeholder-01-660x660.png",
+        default=static("cardapio/img/coming-soon-placeholder.png"),
     )
     details = models.CharField(verbose_name="detalhes")
     price = models.FloatField(verbose_name="preço")
@@ -32,22 +31,21 @@ class Product(models.Model):
         return self.name
 
 
-# model que representa um combo, podendo ser qualquer combinação de produtos e/ou outros combos
+# model que representa um combo composto por:
+# - imagem, nome, descrição, preço e disponibilidade
+# - produtos inclusos e suas quantidades exatas
+# - outros combos inclusos e suas quantidades exatas
+# - produtos que podem ser personalizados (ex: cauda de chocolate ou morango)
+# - itens opcionais (ex: incluir sachês de ketchup)
 class Combo(models.Model):
     name = models.CharField(verbose_name="nome")
     image = models.CharField(
         verbose_name="url da imagem",
-        default="https://www.thefuzzyduck.co.uk/wp-content/uploads/2024/05/image-coming-soon-placeholder-01-660x660.png",
+        default=static("cardapio/img/coming-soon-placeholder.png"),
     )
     details = models.CharField(verbose_name="detalhes")
     price = models.FloatField(verbose_name="preço")
     avaliable = models.BooleanField(default=True, verbose_name="disponível")
-    minimum_optionals_quantity = models.IntegerField(
-        verbose_name="quantidade mínima de opcionais", default=1
-    )
-    maximum_optionals_quantity = models.IntegerField(
-        verbose_name="quantidade máxima de opcionais", default=255
-    )
 
     included_products = models.ManyToManyField(
         Product,
@@ -67,6 +65,9 @@ class Combo(models.Model):
         verbose_name="Combos Inclusos",
     )
 
+    # TODO: ComboChoices
+    # TODO: Optionals
+
     class Meta:
         verbose_name = "Combo"
 
@@ -74,26 +75,38 @@ class Combo(models.Model):
         return self.name
 
 
+# model que representa produtos de quantidade fixa inclusos no combo
 class ComboProduct(models.Model):
     combo = models.ForeignKey(
-        Combo, on_delete=models.CASCADE, related_name="included_combo"
+        Combo, on_delete=models.CASCADE, related_name="included_product"
     )
     included_product = models.ForeignKey(
         Product, on_delete=models.CASCADE, verbose_name="produto incluso"
     )
+    quantity = models.IntegerField(verbose_name="quantidade", default=0)
 
-    optional = models.BooleanField(default=False, verbose_name="opcional")
 
-
+# model que representa combos de quantidade fixa inclusos no combo
 class ComboCombo(models.Model):
     combo = models.ForeignKey(
-        Combo, on_delete=models.CASCADE, related_name="included_product"
+        Combo, on_delete=models.CASCADE, related_name="included_combo"
     )
     included_combo = models.ForeignKey(
         Combo, on_delete=models.CASCADE, verbose_name="combo incluso"
     )
+    quantity = models.IntegerField(verbose_name="quantidade", default=0)
 
-    optional = models.BooleanField(default=False, verbose_name="opcional")
+
+class ComboChoices:
+    pass
+
+
+class ComboChoicesProduct:
+    pass
+
+
+class Optionals:
+    pass
 
 
 # model que representa um cardápio, usado para categorizar produtos

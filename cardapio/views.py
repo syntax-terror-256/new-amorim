@@ -30,9 +30,8 @@ class DetailView(View):
 
                 menus = Menu.objects.all()
                 context = {
-                    "menus": menus,
-                    "popup_type": "combo",
-                    "popup_object": obj,
+                    "type": "combo",
+                    "instance": obj,
                 }
                 return render(request, "cardapio/details.html", context=context)
 
@@ -41,9 +40,8 @@ class DetailView(View):
 
                 menus = Menu.objects.all()
                 context = {
-                    "menus": menus,
-                    "popup_type": "product",
-                    "popup_object": obj,
+                    "type": "product",
+                    "instance": obj,
                 }
                 return render(request, "cardapio/details.html", context=context)
 

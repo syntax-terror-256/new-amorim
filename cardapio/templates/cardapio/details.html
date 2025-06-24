@@ -3,20 +3,65 @@
 
 <div class="fixed flex items-center justify-center z-5 w-full h-full bg-black/50">
   <div class="flex flex-col z-6 w-full h-full lg:w-3xl lg:h-5/6 lg:mx-32 lg:my-80 p-5 bg-white rounded-2xl">
-    {% comment %} botão de fechar {% endcomment %}
+    <!-- botão de fechar popup -->
+    <!-- TODO: alterar para uma seta de voltar no layout mobile -->
     <div class="flex flex-row justify-end mb-2">
       <button onclick="closePopup()" class="cursor-pointer">
         <img class="h-7 w-7" src="{% static 'cardapio/img/x.svg' %}" alt="">
       </button>
     </div>
 
-    {% comment %} conteúdo principal da popup {% endcomment %}
-    <div class="mx-5">
-      {% if popup_type == 'product' %}
-      <h2 class="text-2xl font-bold">{{ popup_object.name }}</h2>
+    <!-- conteúdo principal -->
+    <div class="mx-5 flex flex-col overflow-y-auto">
+      <h2 class="text-2xl font-bold">{{ instance.name }}</h2>
+      <!-- detalhes de produto -->
+      {% if type == 'product' %}
 
-      {% elif popup_type == 'combo' %}
-      <h2 class="text-2xl font-bold">{{ popup_object.name }}</h2>
+      <!-- detalhes de combo -->
+      {% elif type == 'combo' %}
+
+      <!-- lista de produtos inclusos -->
+      <!-- imagem, nome, decrição e quantidade -->
+      <h3 class="text-1xl font-bold">Produtos Inclusos:</h3>
+      {% for combo_product in instance.included_product.all %}
+      {% with product=combo_product.included_product %}
+      <div class="flex flex-row">
+        <img src="{{product.image}}" height="80px" width="80px" alt="image">
+        {{product.name}} --- {{combo_product.quantity}}
+        {{product.get_unit_type_display}}{{combo_product.quantity|pluralize}} <br>
+        {{product.details}}
+      </div>
+      {% endwith %}
+      {% endfor %}
+
+      <!-- lista  de combos inclusos -->
+      <!-- imagem, nome, descrição e quantidade -->
+      <h3 class="text-1xl font-bold">Combos Inclusos:</h3>
+      Outros combos que também estão inclusos neste combo: <br>
+      {% for combo_combo in instance.included_combo.all %}
+      {% with combo=combo_combo.included_combo %}
+      <div class="flex flex-row">
+        <img src="{{combo.image}}" height="80px" width="80px" alt="image">
+        {{combo.name}} --- {{combo_combo.quantity}}x <br>
+        {{combo.details}}
+      </div>
+      {% endwith %}
+      {% endfor %}
+
+      <!-- TODO: replace this placeholder -->
+      <h3 class="text-1xl font-bold">Itens Personalizáveis:</h3>
+      Inclua pelo menos 2 e no máximo 3 dos seguintes itens: <br>
+      - [] Coxinha <br>
+      - [] Pastel <br>
+      - [] Kibe <br>
+      - [] Bolinha de Queijo <br> <br>
+
+      <!-- TODO: replace this placeholder -->
+      <h3 class="text-1xl font-bold">Opcionais:</h3>
+      - [] Ketchup <br>
+      - [] Maionese <br>
+      - [] Geleia de Pimenta <br>
+
 
       {% else %}
       <p>Erro ao carregar popup</p>
