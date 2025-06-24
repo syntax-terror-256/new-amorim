@@ -3,11 +3,14 @@ import time
 import sys
 
 
-def dev():
+def dev(address: str):
     try:
-        p1 = subprocess.Popen(["uv", "run", "manage.py", "runserver"])
+        p1 = subprocess.Popen(["uv", "run", "manage.py", "runserver", address])
     except FileNotFoundError:
-        p1 = subprocess.Popen(["uv", "run", "manage.py", "runserver"], shell=True)
+        p1 = subprocess.Popen(
+            ["uv", "run", "manage.py", "runserver", address],
+            shell=True,
+        )
 
     try:
         p2 = subprocess.Popen(["npm", "run", "dev"])
@@ -29,7 +32,10 @@ if __name__ == "__main__":
 
     match script:
         case "dev":
-            dev()
+            addres = ""
+            if len(sys.argv) >= 3:
+                addres = sys.argv[2]
+            dev(addres)
 
         case _:
             exit(f"Script not found: '{script}'")
