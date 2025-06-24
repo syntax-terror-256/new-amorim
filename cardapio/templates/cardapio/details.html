@@ -1,8 +1,7 @@
 {% load static %}
 <link href="{% static 'shared/css/output.css' %}" rel="stylesheet">
 
-<div
-  class="fixed flex items-center justify-center z-5 w-full h-full bg-black/50">
+<div class="fixed flex items-center justify-center z-5 w-full h-full bg-black/50">
   <div class="flex flex-col z-6 w-full h-full lg:w-3xl lg:h-5/6 lg:mx-32 lg:my-80 p-5 bg-white rounded-2xl">
     {% comment %} botão de fechar {% endcomment %}
     <div class="flex flex-row justify-end mb-2">
@@ -28,7 +27,7 @@
 </div>
 
 <script>
-  {% comment %} TODO: replace this placeholder {% endcomment %}
+  // TODO: replace this placeholder
   function closePopup() {
     window.location.href = "{% url 'cardapio:index' %}"
   }
