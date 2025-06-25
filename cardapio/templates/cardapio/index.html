@@ -29,7 +29,7 @@
   <form method="GET" action="{% url 'cardapio:index' %}" class="flex items-center gap-2 max-w-7xl">
     <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Buscar produtos..."
            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400" />
-    <button type="submit" class="bg-pink-400 text-white px-4 py-2 rounded-md hover:bg-pink-500">
+    <button type="submit" class="bg-pink-400 text-white px-4 py-2 rounded-md hover:bg-pink-500 cursor-pointer">
       🔍
     </button>
   </form>
@@ -52,6 +52,8 @@
       scroll-behavior: smooth;
     }
   </style>
+
+  <section id="popups"></section>
 
   <!-- Conteúdo principal -->
   <div class="flex flex-row h-full pt-42">
@@ -90,11 +92,11 @@
 
           <!-- Botões -->
           <button onclick="moveSlide(-1)"
-                  class="absolute top-1/2 left-2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-pink-400">
+                  class="absolute top-1/2 left-2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-pink-400 cursor-pointer">
             ◀
           </button>
           <button onclick="moveSlide(1)"
-                  class="absolute top-1/2 right-2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-pink-400">
+                  class="absolute top-1/2 right-2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-pink-400 cursor-pointer">
             ▶
           </button>
         </div>
@@ -109,9 +111,9 @@
 
               <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {% for combo in menu.combos.all %}
-                  <!-- TODO: replace this placeholder -->
-                  <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col"
-                     id="combo-{{ combo.id }}" href="{% url 'cardapio:details' type='combo' pk=combo.id %}">
+                  <button class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col text-left cursor-pointer"
+                          id="combo-{{ combo.id }}"
+                          onclick="createPopup('combo', '{{combo.id}}')">
                     <img src="{{ combo.image }}" alt="{{ combo.name }}"
                          class="w-50 y-full lg:h-45 lg:w-full object-cover border-b border-pink-300 bg-white">
                     <div class="p-4 flex flex-col flex-1 justify-between">
@@ -126,13 +128,13 @@
                         </span>
                       </div>
                     </div>
-                  </a>
+                  </button>
                 {% endfor %}
 
                 {% for product in menu.products.all %}
-                  <!-- TODO: replace this placeholder -->
-                  <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col"
-                     id="product-{{ product.id }}" href="{% url 'cardapio:details' type='produto' pk=product.id %}">
+                  <button class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col text-left cursor-pointer"
+                          id="product-{{ product.id }}"
+                          onclick="createPopup('produto', '{{product.id}}')">
                     <img src="{{ product.image }}" alt="{{ product.name }}"
                          class="w-50 y-full lg:h-45 lg:w-full object-cover border-b border-pink-300 bg-white">
                     <div class="p-4 flex flex-col flex-1 justify-between">
@@ -147,7 +149,7 @@
                         </span>
                       </div>
                     </div>
-                  </a>
+                  </button>
                 {% endfor %}
               </div>
             </div>
@@ -178,6 +180,34 @@
 
       const offset = -currentIndex * 100;
       promoCarousel.style.transform = `translateX(${offset}%)`;
+    }
+  </script>
+
+  <script>
+    function createPopup(type, pk) {
+      fetch(`/detalhes/${type}/${pk}`).then(
+        response => {if (!response.ok) {
+          // Check if the request was successful
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+          // console.log(response.text())
+          return response.text();
+        }
+      ).then(
+        response => {
+          const popupSection = document.getElementById("popups")
+          const popupNode = document.createElement("div")
+          popupNode.innerHTML = response
+
+          popupSection.appendChild(popupNode)
+        }
+      )
+    }
+
+    function closePopup() {
+      const popupSection = document.getElementById("popups")
+      const popupNode = popupSection.lastChild
+      popupSection.removeChild(popupNode)
     }
   </script>
 {% endblock main %}
