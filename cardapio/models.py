@@ -65,7 +65,9 @@ class Combo(models.Model):
         verbose_name="Combos Inclusos",
     )
 
-    # TODO: ComboChoices
+    included_choices = models.ManyToManyField(
+        "ComboChoices", verbose_name="Campos Personalizáveis"
+    )
     # TODO: Optionals
 
     class Meta:
@@ -97,12 +99,39 @@ class ComboCombo(models.Model):
     quantity = models.IntegerField(verbose_name="quantidade", default=0)
 
 
-class ComboChoices:
-    pass
+class ComboChoices(models.Model):
+    title = models.CharField(verbose_name="título")
+    description = models.TextField(verbose_name="descrição")
+    minimun_choices = models.IntegerField(
+        verbose_name="quantidade mínima de escolhas", default=0
+    )
+    maximun_choices = models.IntegerField(
+        verbose_name="quantidade máxima de escolhas", default=255
+    )
+    included_products = models.ManyToManyField(
+        Product,
+        through="ComboChoicesProduct",
+        through_fields=("combo_choice", "included_product"),
+        blank=True,
+        symmetrical=False,
+        verbose_name="Produtos Inclusos",
+    )
+
+    class Meta:
+        verbose_name = "Campo Personalizável de Combo"
+
+    def __str__(self):
+        return self.title
 
 
-class ComboChoicesProduct:
-    pass
+class ComboChoicesProduct(models.Model):
+    combo_choice = models.ForeignKey(
+        ComboChoices, on_delete=models.CASCADE, related_name="included_product"
+    )
+    included_product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, verbose_name="produto incluso"
+    )
+    selected = models.BooleanField(verbose_name="selecionado")
 
 
 class Optionals:

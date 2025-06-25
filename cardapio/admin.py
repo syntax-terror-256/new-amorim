@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Product, Combo, Menu
+from .models import Product, Combo, ComboChoices, Menu
 
 
 # usado para exibir os cardápios associados a um produto no painel do produto
@@ -55,6 +55,21 @@ class ComboComboInline(admin.TabularInline):
     extra = 0
 
 
+# usado para exibir uma tabela para adicionar combos a combos
+class ComboChoicesInline(admin.TabularInline):
+    verbose_name = "Campos Personalizáveis Inclusos"
+    verbose_name_plural = verbose_name
+    model = Combo.included_choices.through
+    extra = 0
+
+
+class ComboChoicesProductInline(admin.TabularInline):
+    verbose_name = "produtos inclusos"
+    verbose_name_plural = verbose_name
+    model = ComboChoices.included_products.through
+    extra = 0
+
+
 # registra models no painel de admin
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -67,7 +82,14 @@ class ComboAdmin(admin.ModelAdmin):
         MenuComboModelInline,
         ComboProductInline,
         ComboComboInline,
+        ComboChoicesInline,
     ]
+    exclude = ["included_choices"]
+
+
+@admin.register(ComboChoices)
+class ComboChoicesAdmin(admin.ModelAdmin):
+    inlines = [ComboChoicesProductInline]
 
 
 @admin.register(Menu)
