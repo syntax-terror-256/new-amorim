@@ -30,7 +30,9 @@
                 <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row mx-4"
                    href="{% url 'cardapio:details' type='produto' pk=product.id %}"
                 >
-                  <img src="{{product.image}}" alt="image" class="y-full max-h-30 object-contain border-b border-pink-300 bg-white p-2">
+                  <div class="h-30 w-40 overflow-hidden">
+                  <img src="{{product.image}}" alt="image" class="h-full w-full object-cover border-b border-pink-300 bg-white">
+                  </div>
                   <div class="flex flex-row justify-between w-full px-4 py-2">
                     <div class="flex flex-col">
                       <h3 class="text-lg font-semibold text-pink-700">{{ product.name }}</h3>
@@ -57,7 +59,7 @@
                 <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row mx-4"
                    href="{% url 'cardapio:details' type='combo' pk=combo.id %}"
                 >
-                  <img src="{{combo.image}}" alt="image" class="y-full max-h-30 object-contain border-b border-pink-300 bg-white p-2">
+                  <img src="{{combo.image}}" alt="image" class="h-30 w-40 object-cover border-b border-pink-300 bg-white">
                   <div class="flex flex-row justify-between w-full px-4 py-2">
                     <div class="flex flex-col">
                       <h3 class="text-lg font-semibold text-pink-700">{{ combo.name }}</h3>
@@ -93,7 +95,7 @@
                   <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row w-full"
                      href="{% url 'cardapio:details' type='produto' pk=product.id %}"
                   >
-                    <img src="{{product.image}}" alt="image" class="y-full max-h-30 object-contain border-b border-pink-300 bg-white p-2">
+                    <img src="{{product.image}}" alt="image" class="h-30 w-40 object-cover border-b border-pink-300 bg-white">
                     <div class="flex flex-row justify-between w-full px-4 py-2">
                       <div class="flex flex-col">
                         <h3 class="text-lg font-semibold text-pink-700">{{ product.name }}</h3>

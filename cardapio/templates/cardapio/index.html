@@ -113,7 +113,7 @@
                   <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col"
                      id="combo-{{ combo.id }}" href="{% url 'cardapio:details' type='combo' pk=combo.id %}">
                     <img src="{{ combo.image }}" alt="{{ combo.name }}"
-                         class="w-50 y-full lg:h-40 lg:w-full object-contain border-b border-pink-300 bg-white p-2">
+                         class="w-50 y-full lg:h-45 lg:w-full object-cover border-b border-pink-300 bg-white">
                     <div class="p-4 flex flex-col flex-1 justify-between">
                       <div>
                         <h3 class="text-base font-semibold text-pink-700">{{ combo.name }}</h3>
@@ -134,7 +134,7 @@
                   <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col"
                      id="product-{{ product.id }}" href="{% url 'cardapio:details' type='produto' pk=product.id %}">
                     <img src="{{ product.image }}" alt="{{ product.name }}"
-                         class="w-50 y-full lg:h-40 lg:w-full object-contain border-b border-pink-300 bg-white p-2">
+                         class="w-50 y-full lg:h-45 lg:w-full object-cover border-b border-pink-300 bg-white">
                     <div class="p-4 flex flex-col flex-1 justify-between">
                       <div>
                         <h3 class="text-base font-semibold text-pink-700">{{ product.name }}</h3>
