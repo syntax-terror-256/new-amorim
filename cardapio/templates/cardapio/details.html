@@ -13,69 +13,101 @@
 
     <!-- conteúdo principal -->
     <div class="mx-5 flex flex-col overflow-y-auto">
-      <h2 class="text-2xl font-bold">{{ instance.name }}</h2>
+      <h2 class="text-3xl font-bold mb-4">{{ instance.name }}</h2>
       <!-- detalhes de produto -->
       {% if type == 'product' %}
 
       <!-- detalhes de combo -->
       {% elif type == 'combo' %}
 
-      <!-- lista de produtos inclusos -->
-      <!-- imagem, nome, decrição e quantidade -->
-      <h3 class="text-1xl font-bold">Produtos Inclusos:</h3>
-      {% for combo_product in instance.included_product.all %}
-      {% with product=combo_product.included_product %}
-      <div class="flex flex-row">
-        <img src="{{product.image}}" height="80px" width="80px" alt="image">
-        {{product.name}} --- {{combo_product.quantity}}
-        {{product.get_unit_type_display}}{{combo_product.quantity|pluralize}} <br>
-        {{product.details}}
-      </div>
-      {% endwith %}
-      {% endfor %}
+        <!-- lista de produtos inclusos -->
+        <!-- imagem, nome, decrição e quantidade -->
+        {% if instance.included_product.all %}
+          <h3 class="text-2xl font-bold">Produtos Inclusos:</h3>
+          <div class="flex flex-col space-y-2 mb-4">
+            {% for combo_product in instance.included_product.all %}
+              {% with product=combo_product.included_product %}
+                <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row mx-4"
+                   href="{% url 'cardapio:details' type='produto' pk=product.id %}"
+                >
+                  <img src="{{product.image}}" alt="image" class="y-full max-h-30 object-contain border-b border-pink-300 bg-white p-2">
+                  <div class="flex flex-row justify-between w-full px-4 py-2">
+                    <div class="flex flex-col">
+                      <h3 class="text-lg font-semibold text-pink-700">{{ product.name }}</h3>
+                      <p>{{product.details}}</p>
+                    </div>
+                    <span class="text-green-700 font-bold text-2xl flex items-end p-4">
+                      {{combo_product.quantity}} {{product.get_unit_type_display}}{{combo_product.quantity|pluralize}}
+                    </span>
+                  </div>
+                </a>
+              {% endwith %}
+            {% endfor %}
+          </div>
+        {% endif %}
 
-      <!-- lista  de combos inclusos -->
-      <!-- imagem, nome, descrição e quantidade -->
-      <h3 class="text-1xl font-bold">Combos Inclusos:</h3>
-      Outros combos que também estão inclusos neste combo: <br>
-      {% for combo_combo in instance.included_combo.all %}
-      {% with combo=combo_combo.included_combo %}
-      <div class="flex flex-row">
-        <img src="{{combo.image}}" height="80px" width="80px" alt="image">
-        {{combo.name}} --- {{combo_combo.quantity}}x <br>
-        {{combo.details}}
-      </div>
-      {% endwith %}
-      {% endfor %}
-      
-      <!-- lisa de itens personalizáveis -->
-      <!-- título, descrição, produtos -->
-      <!-- mínimo de escolhas, máximo de escolhas, selecionado -->
-      <h3 class="text-1xl font-bold">Itens Personalizáveis:</h3>
-      {% for combo_choice in instance.included_choices.all %}
-      <h4 class="text-xl font-bold">{{combo_choice.title}}</h4>
-      <p>{{combo_choice.description}}</p>
-      <ul>
-        {% for product_choice in combo_choice.included_product.all %}
-        {% with product=product_choice.included_product %}
-          <input type="checkbox" id="{{combo_choice.id}}-{{product.id}}" 
-          value="{{product.id}}" {% if product_choice.selected %}checked{% endif %}>
-          <label for="{{combo_choice.id}}-{{product.id}}">{{product.name}}</label>
-          <br>
-        {% endwith %}
+        <!-- lista  de combos inclusos -->
+        <!-- imagem, nome, descrição e quantidade -->
+        {% if instance.included_combo.all %}
+          <div class="flex flex-col space-y-2 mb-4">
+            <h3 class="text-2xl font-bold">Combos Inclusos:</h3>
+            Outros combos que também estão inclusos neste combo: <br>
+            {% for combo_combo in instance.included_combo.all %}
+              {% with combo=combo_combo.included_combo %}
+                <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row mx-4"
+                   href="{% url 'cardapio:details' type='combo' pk=combo.id %}"
+                >
+                  <img src="{{combo.image}}" alt="image" class="y-full max-h-30 object-contain border-b border-pink-300 bg-white p-2">
+                  <div class="flex flex-row justify-between w-full px-4 py-2">
+                    <div class="flex flex-col">
+                      <h3 class="text-lg font-semibold text-pink-700">{{ combo.name }}</h3>
+                      <p>{{combo.details}}</p>
+                    </div>
+                    <span class="text-green-700 font-bold text-2xl flex items-end p-4">
+                      {{combo_combo.quantity}}x
+                    </span>
+                  </div>
+                </a>
+              {% endwith %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- lisa de itens personalizáveis -->
+        <!-- título, descrição, produtos -->
+        <!-- mínimo de escolhas, máximo de escolhas, selecionado -->
+        {% for combo_choice in instance.included_choices.all %}
+          <h4 class="text-xl font-bold">{{combo_choice.title}}</h4>
+          <p class="mb-4">{{combo_choice.description}}</p>
+          <ul class="space-y-2">
+            {% for product_choice in combo_choice.included_product.all %}
+              {% with product=product_choice.included_product %}
+                <div class="flex flex-row mx-4">
+                  <input
+                    class="size-5 mr-2"
+                    type="checkbox"
+                    id="{{combo_choice.id}}-{{product.id}}"
+                    value="{{product.id}}" {% if product_choice.selected %}checked{% endif %}
+                    disabled
+                  >
+                  <a class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row w-full"
+                     href="{% url 'cardapio:details' type='produto' pk=product.id %}"
+                  >
+                    <img src="{{product.image}}" alt="image" class="y-full max-h-30 object-contain border-b border-pink-300 bg-white p-2">
+                    <div class="flex flex-row justify-between w-full px-4 py-2">
+                      <div class="flex flex-col">
+                        <h3 class="text-lg font-semibold text-pink-700">{{ product.name }}</h3>
+                        <p>{{product.details}}</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              {% endwith %}
+            {% endfor %}
+          </ul>
         {% endfor %}
-      </ul>
-      {% endfor %}
-
-      <!-- TODO: replace this placeholder -->
-      <h3 class="text-1xl font-bold">Opcionais:</h3>
-      - [] Ketchup <br>
-      - [] Maionese <br>
-      - [] Geleia de Pimenta <br>
-
-
       {% else %}
-      <p>Erro ao carregar popup</p>
+        <p>Erro ao carregar popup</p>
 
       {% endif %}
     </div>
