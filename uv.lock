@@ -26,6 +26,12 @@ wheels = [
 ]
 
 [[package]]
+name = "djhtml"
+version = "3.0.8"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/49/e8/c2d12facfc47fec732633ea3c2d820298e0e314331fc43bcf694099abcb5/djhtml-3.0.8.tar.gz", hash = "sha256:ec3b4cf25f0959474c7793da1becba654ca9587689ce143955bcbc2638eeabce", size = 27886, upload-time = "2025-05-22T07:32:23.81Z" }
+
+[[package]]
 name = "new-amorim"
 version = "0.1.0"
 source = { virtual = "." }
@@ -33,8 +39,16 @@ dependencies = [
     { name = "django" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "djhtml" },
+]
+
 [package.metadata]
 requires-dist = [{ name = "django", specifier = ">=5.2.1" }]
+
+[package.metadata.requires-dev]
+dev = [{ name = "djhtml", specifier = ">=3.0.8" }]
 
 [[package]]
 name = "sqlparse"

@@ -29,8 +29,8 @@
   <form method="GET" action="{% url 'cardapio:index' %}" class="flex items-center gap-2 max-w-7xl">
     <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Buscar produtos..."
            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400" />
-    <button type="submit" class="bg-pink-400 text-white px-4 py-2 rounded-md hover:bg-pink-500 cursor-pointer">
-      🔍
+    <button type="submit" class="bg-pink-400 text-white p-3 rounded-md hover:bg-pink-500 cursor-pointer w-12 h-10">
+      <img src="{% static 'cardapio/img/search.svg' %}" alt="search">
     </button>
   </form>
 
