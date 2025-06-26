@@ -1,163 +1,213 @@
-{% extends "cardapio/default.html" %}
+{% extends 'cardapio/default.html' %}
 {% load static %}
 
 {% block link %}
-<link rel="stylesheet" href="{% static "cardapio/css/index.css" %}">
+  <link rel="stylesheet" href="{% static 'cardapio/css/index.css' %}">
 {% endblock link %}
 
 {% block subheader %}
-<!-- Dropdown de categorias (somente em TELAS PEQUENAS) -->
-<div class="relative text-left block lg:hidden">
-  <button onclick="toggleDropdown()" class="bg-pink-300 text-black px-4 py-2 rounded-md shadow">
-    Categorias ▼
-  </button>
-  <div id="dropdownMenu" class="absolute mt-2 w-40 bg-white rounded-md shadow-lg hidden z-10">
-    <ul class="py-1 text-sm text-gray-700">
-      <li><a href="#" class="block px-4 py-2 hover:bg-pink-100" onclick="scrollToSection('')">Todos</a></li>
-      {% for menu in menus %}
-        <li>
-          <a href="#menu-{{ menu.id }}" class="block px-4 py-2 hover:bg-pink-100" onclick="closeDropdown()">
-            {{ menu.name }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
+  <!-- Dropdown de categorias (somente em TELAS PEQUENAS) -->
+  <div class="relative text-left block lg:hidden">
+    <button onclick="toggleDropdown()" class="bg-pink-300 text-black px-4 py-2 rounded-md shadow">
+      Categorias ▼
+    </button>
+    <div id="dropdownMenu" class="absolute mt-2 w-40 bg-white rounded-md shadow-lg hidden z-10">
+      <ul class="py-1 text-sm text-gray-700">
+        <li><a href="#" class="block px-4 py-2 hover:bg-pink-100" onclick="scrollToSection('')">Todos</a></li>
+        {% for menu in menus %}
+          <li>
+            <a href="#menu-{{ menu.id }}" class="block px-4 py-2 hover:bg-pink-100" onclick="closeDropdown()">
+              {{ menu.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
-</div>
 
-<!-- Barra de pesquisa -->
-<form method="GET" action="{% url 'cardapio:index' %}" class="flex items-center gap-2 max-w-7xl">
-  <input
-    type="text"
-    name="q"
-    value="{{ request.GET.q }}"
-    placeholder="Buscar produtos..."
-    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400"
-  />
-  <button type="submit" class="bg-pink-400 text-white px-4 py-2 rounded-md hover:bg-pink-500">
-    🔍
-  </button>
-</form>
+  <!-- Barra de pesquisa -->
+  <form method="GET" action="{% url 'cardapio:index' %}" class="flex items-center gap-2 max-w-7xl">
+    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Buscar produtos..."
+           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400" />
+    <button type="submit" class="bg-pink-400 text-white px-4 py-2 rounded-md hover:bg-pink-500 cursor-pointer">
+      🔍
+    </button>
+  </form>
 
-<!-- Scripts dropdown -->
-<script>
-  function toggleDropdown() {
-    document.getElementById("dropdownMenu").classList.toggle("hidden");
-  }
-  function closeDropdown() {
-    document.getElementById("dropdownMenu").classList.add("hidden");
-  }
-</script>
+  <!-- Scripts dropdown -->
+  <script>
+    function toggleDropdown() {
+      document.getElementById("dropdownMenu").classList.toggle("hidden");
+    }
+    function closeDropdown() {
+      document.getElementById("dropdownMenu").classList.add("hidden");
+    }
+  </script>
 {% endblock subheader %}
 
 
 {% block main %}
-<style>
-  html {
-    scroll-behavior: smooth;
-  }
-</style>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 
-<!-- Conteúdo principal -->
-<div class="flex flex-row h-full pt-42">
-  <!-- SIDEBAR à esquerda para desktop -->
-  <div class="z-40 p-6 hidden lg:block overflow-y-auto w-56 pl-8 pt-8">
-    <p class="text-lg font-semibold mb-4">Lista de opções</p>
-    <ul class="space-y-2">
-      <li class="border-b border-gray-400 pb-1">
-        <a href="#" onclick="scrollToSection('')" class="hover:text-pink-600">• Todos</a>
-      </li>
-      {% for menu in menus %}
-        <li class="border-b border-gray-400 pb-1">
-          <a href="#menu-{{ menu.id }}" class="hover:text-pink-600 text-sm">• {{ menu.name }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+  <section id="popups"></section>
 
-  <!-- conteúdo principal à direita -->
-  <div class="overflow-y-auto w-full lg:pr-48 no-scrollbar px-8 pt-8">
-    <!-- CARROSSEL DE PROMOÇÕES -->
-    <section class="mb-12">
-      <h2 class="text-xl font-bold mb-4 text-pink-700 uppercase tracking-wide">★ Destaques</h2>
+  <!-- Conteúdo principal -->
+  <div class="flex flex-row h-full pt-42">
+    <!-- SIDEBAR à esquerda para desktop -->
+    <div class="p-6 hidden lg:block overflow-y-auto w-56 pl-8 pt-8">
+      <p class="text-lg font-semibold mb-4">Lista de opções</p>
+      <ul class="space-y-2">
+        {% for menu in menus %}
+          <li class="border-b border-gray-400 pb-1">
+            <a href="#menu-{{ menu.id }}" class="hover:text-pink-600 text-sm">• {{ menu.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
 
-      <div class="relative y-full overflow-hidden shadow-lg lg:mx-8">
-        <div id="promoCarousel" class="flex transition-transform duration-500 ease-in-out">
+    <!-- conteúdo principal à direita -->
+    <div class="overflow-y-auto w-full lg:pr-48 no-scrollbar px-8 pt-8">
+      <!-- CARROSSEL DE PROMOÇÕES -->
+      <section class="mb-12">
+        <h2 class="text-xl font-bold mb-4 text-pink-700 uppercase tracking-wide">★ Destaques</h2>
+
+        <div class="relative y-full overflow-hidden shadow-lg lg:mx-8">
+          <div id="promoCarousel" class="flex transition-transform duration-500 ease-in-out">
           <!-- Slide 1: Exemplo -->
-          <div class="w-full flex-shrink-0">
-            <img src="{% static "cardapio/img/ad-banner-placeholder.jpg" %}" alt="Promoção Destaque" class="w-full object-cover">
-          </div>
+            <div class="w-full flex-shrink-0">
+              <img src="{% static 'cardapio/img/ad-banner-placeholder.jpg' %}" alt="Promoção Destaque"
+                   class="w-full object-cover">
+            </div>
 
-          <!-- Slide 2: Exemplo -->
-          <div class="w-full flex-shrink-0">
-            <img src="{% static "cardapio/img/ad-banner-placeholder.jpg" %}" alt="Promoção Destaque" class="w-full object-cover">
-          </div>
-        </div>
-
-        <!-- Botões -->
-        <button onclick="moveSlide(-1)" class="absolute top-1/2 left-2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-pink-400">
-          ◀
-        </button>
-        <button onclick="moveSlide(1)" class="absolute top-1/2 right-2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-pink-400">
-          ▶
-        </button>
-      </div>
-    </section>
-
-    <!-- CARDÁPIO CATEGORIZADO -->
-    <section>
-      {% for menu in menus %}
-        {% if not request.GET.q or menu.products.all|length > 0 %}
-          <div id="menu-{{ menu.id }}" class="mb-12">
-            <h2 class="text-lg font-bold mb-4 text-pink-600 uppercase tracking-wide">★ {{ menu.name }}</h2>
-
-            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {% for product in menu.products.all %}
-                <div class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col">
-                  <img src="{{ product.image }}" alt="{{ product.name }}" class="w-50 y-full lg:h-40 lg:w-full object-contain border-b border-pink-300 bg-white p-2">
-                  <div class="p-4 flex flex-col flex-1 justify-between">
-                    <div>
-                      <h3 class="text-base font-semibold text-pink-700">{{ product.name }}</h3>
-                      <p class="text-gray-600 text-sm mt-1">{{ product.details }}</p>
-                    </div>
-                    <div class="mt-4 flex justify-between items-center">
-                      <span class="text-green-700 font-bold text-lg flex items-center gap-1">
-                        <img src="{% static 'cardapio/img/cart-add.svg' %}" alt="Carrinho" class="w-5 h-5 mx-2">
-                        R$ {{ product.price|floatformat:2 }} {{ product.get_unit_type_display }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              {% endfor %}
+            <!-- Slide 2: Exemplo -->
+            <div class="w-full flex-shrink-0">
+              <img src="{% static 'cardapio/img/ad-banner-placeholder.jpg' %}" alt="Promoção Destaque"
+                   class="w-full object-cover">
             </div>
           </div>
-        {% endif %}
-      {% endfor %}
-    </section>
+
+          <!-- Botões -->
+          <button onclick="moveSlide(-1)"
+                  class="absolute top-1/2 left-2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-pink-400 cursor-pointer">
+            ◀
+          </button>
+          <button onclick="moveSlide(1)"
+                  class="absolute top-1/2 right-2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow hover:bg-pink-400 cursor-pointer">
+            ▶
+          </button>
+        </div>
+      </section>
+
+      <!-- cardápio categorizado -->
+      <section>
+        {% for menu in menus %}
+          {% if not request.GET.q or menu.products.all|length > 0 %}
+            <div id="menu-{{ menu.id }}" class="mb-12">
+              <h2 class="text-lg font-bold mb-4 text-pink-600 uppercase tracking-wide">★ {{ menu.name }}</h2>
+
+              <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {% for combo in menu.combos.all %}
+                  <button class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col text-left cursor-pointer"
+                          id="combo-{{ combo.id }}"
+                          onclick="createPopup('combo', '{{combo.id}}')">
+                    <img src="{{ combo.image }}" alt="{{ combo.name }}"
+                         class="w-50 y-full lg:h-45 lg:w-full object-cover border-b border-pink-300 bg-white">
+                    <div class="p-4 flex flex-col flex-1 justify-between">
+                      <div>
+                        <h3 class="text-base font-semibold text-pink-700">{{ combo.name }}</h3>
+                        <p class="text-gray-600 text-sm mt-1">{{ combo.details }}</p>
+                      </div>
+                      <div class="mt-4 flex justify-between items-center">
+                        <span class="text-green-700 font-bold text-lg flex items-center gap-1">
+                          <img src="{% static 'cardapio/img/cart-add.svg' %}" alt="Carrinho" class="w-5 h-5 mx-2">
+                          R$ {{ combo.price|floatformat:2 }} {{ combo.get_unit_type_display }}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                {% endfor %}
+
+                {% for product in menu.products.all %}
+                  <button class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col text-left cursor-pointer"
+                          id="product-{{ product.id }}"
+                          onclick="createPopup('produto', '{{product.id}}')">
+                    <img src="{{ product.image }}" alt="{{ product.name }}"
+                         class="w-50 y-full lg:h-45 lg:w-full object-cover border-b border-pink-300 bg-white">
+                    <div class="p-4 flex flex-col flex-1 justify-between">
+                      <div>
+                        <h3 class="text-base font-semibold text-pink-700">{{ product.name }}</h3>
+                        <p class="text-gray-600 text-sm mt-1">{{ product.details }}</p>
+                      </div>
+                      <div class="mt-4 flex justify-between items-center">
+                        <span class="text-green-700 font-bold text-lg flex items-center gap-1">
+                          <img src="{% static 'cardapio/img/cart-add.svg' %}" alt="Carrinho" class="w-5 h-5 mx-2">
+                          R$ {{ product.price|floatformat:2 }} {{ product.get_unit_type_display }}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </section>
+    </div>
   </div>
-</div>
 
-<script>
-  function scrollCarousel(direction) {
-    const carousel = document.getElementById('carousel');
-    const scrollAmount = 300;
-    carousel.scrollBy({
-      left: direction * scrollAmount,
-      behavior: 'smooth'
-    });
-  }
+  <script>
+    function scrollCarousel(direction) {
+      const carousel = document.getElementById('carousel');
+      const scrollAmount = 300;
+      carousel.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+      });
+    }
 
-  const promoCarousel = document.getElementById('promoCarousel');
-  const totalSlides = promoCarousel.children.length;
-  let currentIndex = 0;
+    const promoCarousel = document.getElementById('promoCarousel');
+    const totalSlides = promoCarousel.children.length;
+    let currentIndex = 0;
 
-  function moveSlide(direction) {
-    currentIndex += direction;
-    if (currentIndex < 0) currentIndex = totalSlides - 1;
-    if (currentIndex >= totalSlides) currentIndex = 0;
+    function moveSlide(direction) {
+      currentIndex += direction;
+      if (currentIndex < 0) currentIndex = totalSlides - 1;
+      if (currentIndex >= totalSlides) currentIndex = 0;
 
-    const offset = -currentIndex * 100;
-    promoCarousel.style.transform = `translateX(${offset}%)`;
-  }
-</script>
+      const offset = -currentIndex * 100;
+      promoCarousel.style.transform = `translateX(${offset}%)`;
+    }
+  </script>
+
+  <script>
+    function createPopup(type, pk) {
+      fetch(`/detalhes/${type}/${pk}`).then(
+        response => {if (!response.ok) {
+          // Check if the request was successful
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+          // console.log(response.text())
+          return response.text();
+        }
+      ).then(
+        response => {
+          const popupSection = document.getElementById("popups")
+          const popupNode = document.createElement("div")
+          popupNode.innerHTML = response
+
+          popupSection.appendChild(popupNode)
+        }
+      )
+    }
+
+    function closePopup() {
+      const popupSection = document.getElementById("popups")
+      const popupNode = popupSection.lastChild
+      popupSection.removeChild(popupNode)
+    }
+  </script>
 {% endblock main %}
