@@ -1,8 +1,7 @@
 {% load static %}
 <link href="{% static 'shared/css/output.css' %}" rel="stylesheet">
-
-<div class="fixed flex items-center justify-center z-5 w-full h-full bg-black/50">
-  <div class="flex flex-col z-6 w-full h-full lg:w-3xl lg:h-5/6 lg:mx-32 lg:my-80 p-5 bg-white rounded-2xl">
+<div class="fixed flex justify-center items-center w-full h-full z-5">
+  <div class="fixed flex flex-col z-6 w-full h-full lg:w-4xl  lg:h-[90%] p-5 bg-white rounded-2xl">
     <!-- botão de fechar popup -->
     <!-- TODO: alterar para uma seta de voltar no layout mobile -->
     <div class="flex flex-row justify-end mb-2">
@@ -14,12 +13,25 @@
     <!-- conteúdo principal -->
     <div class="mx-5 flex flex-col overflow-y-auto">
       <h2 class="text-3xl font-bold mb-4">{{ instance.name }}</h2>
+
       <!-- detalhes de produto -->
       {% if type == 'product' %}
+        {% with product=instance %}
+          <div class="flex flex-col w-full">
+            <div class="flex flex-row w-full h-80">
+              <img class="w-[50%] object-cover rounded-lg" src="{{product.image}}" alt="">
+              <div class="flex flex-col p-4 w-[50%] justify-between">
+                <md class="whitespace-break-spaces overflow-auto rounded-md">{{product.description}}</md>
+                <span class="text-green-700 font-bold text-2xl flex items-end justify-end">
+                  R$ {{ product.price|floatformat:2 }} / {{ product.get_unit_type_display }}
+                </span>
+              </div>
+            </div>
+          </div>
+        {% endwith %}
 
       <!-- detalhes de combo -->
       {% elif type == 'combo' %}
-
         <!-- lista de produtos inclusos -->
         <!-- imagem, nome, decrição e quantidade -->
         {% if instance.included_product.all %}
@@ -114,4 +126,5 @@
       {% endif %}
     </div>
   </div>
+  <div class="fixed flex items-center justify-center w-full h-full z-5 bg-black/30" onclick="closePopup()"></div>
 </div>

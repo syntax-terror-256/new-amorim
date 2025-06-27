@@ -124,7 +124,7 @@
                       <div class="mt-4 flex justify-between items-center">
                         <span class="text-green-700 font-bold text-lg flex items-center gap-1">
                           <img src="{% static 'cardapio/img/cart-add.svg' %}" alt="Carrinho" class="w-5 h-5 mx-2">
-                          R$ {{ combo.price|floatformat:2 }} {{ combo.get_unit_type_display }}
+                          R$ {{ combo.price|floatformat:2 }}
                         </span>
                       </div>
                     </div>
@@ -145,7 +145,7 @@
                       <div class="mt-4 flex justify-between items-center">
                         <span class="text-green-700 font-bold text-lg flex items-center gap-1">
                           <img src="{% static 'cardapio/img/cart-add.svg' %}" alt="Carrinho" class="w-5 h-5 mx-2">
-                          R$ {{ product.price|floatformat:2 }} {{ product.get_unit_type_display }}
+                          R$ {{ product.price|floatformat:2 }} / {{ product.get_unit_type_display }}
                         </span>
                       </div>
                     </div>

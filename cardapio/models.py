@@ -15,6 +15,7 @@ class Product(models.Model):
         default=static("cardapio/img/coming-soon-placeholder.png"),
     )
     details = models.CharField(verbose_name="detalhes")
+    description = models.TextField(verbose_name="descrição")
     price = models.FloatField(verbose_name="preço")
     unit_type = models.IntegerField(
         verbose_name="tipo de unidade",
@@ -132,10 +133,6 @@ class ComboChoicesProduct(models.Model):
         Product, on_delete=models.CASCADE, verbose_name="produto incluso"
     )
     selected = models.BooleanField(verbose_name="selecionado")
-
-
-class Optionals:
-    pass
 
 
 # model que representa um cardápio, usado para categorizar produtos
