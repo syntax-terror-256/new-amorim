@@ -31,6 +31,28 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def get_combos(self):
+        combos = set()
+
+        # combos que incluem este produto diretamente
+        combo_products = ComboProduct.objects.filter(included_product=self.pk)
+        for obj in combo_products:
+            combos.add(obj.combo)
+
+        # combos que inclue este produto como um opcional ou customizável
+        combo_coices_products = ComboChoicesProduct.objects.filter(
+            included_product=self.pk
+        )
+
+        combos_pk = set()
+        for obj in combo_coices_products:
+            combos_pk.add(obj.combo_choice.pk)
+
+        for pk in combos_pk:
+            combos.add(Combo.objects.filter(included_choices=pk)[0])
+
+        return combos
+
 
 # model que representa um combo composto por:
 # - imagem, nome, descrição, preço e disponibilidade

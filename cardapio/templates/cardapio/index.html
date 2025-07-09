@@ -111,9 +111,9 @@
 
               <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {% for combo in menu.combos.all %}
-                  <button class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col text-left cursor-pointer"
-                          id="combo-{{ combo.id }}"
-                          onclick="createPopup('combo', '{{combo.id}}')">
+                  <div class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col text-left cursor-pointer"
+                       id="combo-{{ combo.id }}"
+                       onclick="createPopup('combo', '{{combo.id}}')">
                     <img src="{{ combo.image }}" alt="{{ combo.name }}"
                          class="w-50 y-full lg:h-45 lg:w-full object-cover border-b border-pink-300 bg-white">
                     <div class="p-4 flex flex-col flex-1 justify-between">
@@ -128,13 +128,13 @@
                         </span>
                       </div>
                     </div>
-                  </button>
+                  </div>
                 {% endfor %}
 
                 {% for product in menu.products.all %}
-                  <button class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col text-left cursor-pointer"
-                          id="product-{{ product.id }}"
-                          onclick="createPopup('produto', '{{product.id}}')">
+                  <div class="bg-gray-100 border border-pink-300 rounded-xl shadow-md overflow-hidden flex flex-row lg:flex-col text-left cursor-pointer"
+                       id="product-{{ product.id }}"
+                       onclick="createPopup('produto', '{{product.id}}')">
                     <img src="{{ product.image }}" alt="{{ product.name }}"
                          class="w-50 y-full lg:h-45 lg:w-full object-cover border-b border-pink-300 bg-white">
                     <div class="p-4 flex flex-col flex-1 justify-between">
@@ -149,7 +149,7 @@
                         </span>
                       </div>
                     </div>
-                  </button>
+                  </div>
                 {% endfor %}
               </div>
             </div>
